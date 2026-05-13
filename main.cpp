@@ -39,6 +39,40 @@ for (int i=0;i<4;i++){
 }
          }
     }
+
+
+    void sagakaydir(){
+    for (int i=0;i<4;i++){
+   for (int j =0; j<4; j++) {//herşeyiyle tamamen sola kaydırmayı kopyaladım ancak burada boardı yedek satıra tersten kopyalıyoruz böylece sola kaydırıp tekrar ters çevirince sağa kaydırmış olacak mantık bu.
+      yedeksa[j]=board[i][3-j];
+       }
+       for (int t=0;t<3;t++){// bu döngü sola kaydırıyor.
+         for (int k=0;k<3;k++){
+         if (yedeksa[k]==0){
+           yedeksa[k]=yedeksa[k+1];
+           yedeksa[k+1]=0;}
+         }
+        }
+            for (int k=0;k<3;k++){// bu döngü sola kaymış olanı topluyor. 
+           if(yedeksa[k]==yedeksa[k+1]){
+            yedeksa[k]*=2;
+            yedeksa[k+1]=0;
+           }
+        }
+     for (int t=0;t<3;t++){// bu döngüde toplanmış olanları tekrar sola kaydırıyor.
+   for (int k=0;k<3;k++){
+      if (yedeksa[k]==0){
+         yedeksa[k]=yedeksa[k+1];
+         yedeksa[k+1]=0;
+      }
+   }
+}
+       
+          for (int j =0; j<4; j++){// bu da alt satıra geçmeden doğru satırı boarda ekliyor.
+    board[i][j]=yedeksa[3-j];
+}
+         }
+    }
   
      
    
@@ -83,8 +117,9 @@ for (int i = 0; i < 4; i++)
 srand(time(0));
 addRandom();
 addRandom();
-
-    printBoard();
-
+addRandom();
+addRandom();
+sagakaydir();
+printBoard();
   return 0;
 }
