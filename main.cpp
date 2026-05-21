@@ -111,6 +111,43 @@ for (int i=0;i<4; i++) {// bu da diğer sutüna geçmeden doğru sutünü boarda
       }
      }
 
+     void asagikaydir(){//nerdeyse herşey yukarı kaydırma fonksiyonu ile aynı ama sadece yedek kısma ters kopyalayıp yukarı kaydırıyoruz ve yine tersten yapıştırıyoruz boarda böylece aşağı kaymış oluyor
+            for (int j=0;j<4;j++){
+   for (int i=0;i<4; i++) {
+      yedeksa[i]=board[3-i][j];
+       }
+ 
+       for (int t=0;t<3;t++){// bu döngü yukarı kaydırıyor.
+         for (int k=0;k<3;k++){
+         if (yedeksa[k]==0){
+           yedeksa[k]=yedeksa[k+1];
+           yedeksa[k+1]=0;
+          }
+         }
+        }
+
+            for (int k=0;k<3;k++){// bu döngü yukarı kaymış olanı topluyor. 
+           if(yedeksa[k]==yedeksa[k+1]){
+            yedeksa[k]*=2;
+            yedeksa[k+1]=0;
+           }
+        }
+
+         for (int t=0;t<3;t++){// bu döngüde toplanmış olanları tekrar yukarı kaydırıyor.
+   for (int k=0;k<3;k++){
+      if (yedeksa[k]==0){
+         yedeksa[k]=yedeksa[k+1];
+         yedeksa[k+1]=0;
+      }
+   }
+}
+
+for (int i=0;i<4; i++) {// bu da diğer sutüna geçmeden doğru sutünü boarda ekliyor.
+     board[3-i][j]=yedeksa[i];
+       }
+      }
+   }
+
 
 void printBoard() {
     for (int i = 0; i < 4; i++) {
@@ -147,7 +184,8 @@ addRandom();
 addRandom();
 addRandom();
 addRandom();
-yukarikaydir();
+asagikaydir();
 printBoard();
+
   return 0;
 }
