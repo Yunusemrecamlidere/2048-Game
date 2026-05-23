@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <conio.h>// bu fonksiyon tuşlara bastıktan sonra entera basmaya gerek kalmadan hamleyi yapmamıza yarayacak.
 
 using namespace std;
 int board[4][4];
@@ -155,7 +156,7 @@ void printBoard() {
             cout << board[i][j] << "\t";
         }
         cout << endl;
-    }
+    }cout << endl;
 }
 
 void addRandom() {
@@ -173,19 +174,32 @@ void addRandom() {
 }
 
 int main() {
+   srand(time(0));
     cout << "2048 Oyunu - Baslangic" << endl;
 
-for (int i = 0; i < 4; i++)
-        for (int j = 0; j < 4; j++)
-            board[i][j] = 0;
 
-srand(time(0));
+
+
+for (int i = 0; i < 4; i++){
+        for (int j = 0; j < 4; j++){
+            board[i][j] = 0;}
+}
+
 addRandom();
 addRandom();
+do {
+system("cls");
+printBoard();   
+int tus = _getch();
+if (tus == 224) ;
+    tus = _getch();
+    if (tus == 72) yukarikaydir();
+    else if (tus == 80) asagikaydir();
+    else if (tus == 75) solakaydir();
+    else if (tus == 77) sagakaydir();
+}
 addRandom();
-addRandom();
-asagikaydir();
-printBoard();
+}while (true);
 
   return 0;
 }
