@@ -6,6 +6,7 @@
 using namespace std;
 int board[4][4];
 int yedeksa[4];
+int skor=0;
 
 void solakaydir(){
 
@@ -24,6 +25,7 @@ for (int i=0;i<4;i++){
            if(yedeksa[k]==yedeksa[k+1]){
             yedeksa[k]*=2;
             yedeksa[k+1]=0;
+            skor+=yedeksa[k];
            }
         }
      for (int t=0;t<3;t++){// bu döngüde toplanmış olanları tekrar sola kaydırıyor.
@@ -58,6 +60,7 @@ for (int i=0;i<4;i++){
            if(yedeksa[k]==yedeksa[k+1]){
             yedeksa[k]*=2;
             yedeksa[k+1]=0;
+             skor+=yedeksa[k];
            }
         }
      for (int t=0;t<3;t++){// bu döngüde toplanmış olanları tekrar sola kaydırıyor.
@@ -94,6 +97,7 @@ for (int i=0;i<4;i++){
            if(yedeksa[k]==yedeksa[k+1]){
             yedeksa[k]*=2;
             yedeksa[k+1]=0;
+             skor+=yedeksa[k];
            }
         }
 
@@ -131,6 +135,7 @@ for (int i=0;i<4; i++) {// bu da diğer sutüna geçmeden doğru sutünü boarda
            if(yedeksa[k]==yedeksa[k+1]){
             yedeksa[k]*=2;
             yedeksa[k+1]=0;
+             skor+=yedeksa[k];
            }
         }
 
@@ -156,24 +161,38 @@ void printBoard() {
             cout << board[i][j] << "\t";
         }
         cout << endl;
-    }cout << endl;
+        
+    }
+    cout << endl;
+    cout << "Skor: " << skor << endl;
 }
 
 void addRandom() {
     int r, c;
-    do {
-        r = rand() % 4;
-        c = rand() % 4;
-    } while (board[r][c] != 0);
+    bool bosvarmi = false;
     
-    int sayi = rand() % 10 + 1;
-    if (sayi == 10)
-        board[r][c] = 4;
-    else
-        board[r][c] = 2;
+    for (int i = 0; i < 4; i++){
+        for (int j = 0; j < 4; j++){
+            if (board[i][j] == 0) bosvarmi = true;}
+        }
+    
+    if (bosvarmi) {
+        do {
+            r = rand() % 4;
+            c = rand() % 4;
+        } while (board[r][c] != 0);
+        
+        int sayi = rand() % 10 + 1;
+        if (sayi == 10)
+            board[r][c] = 4;
+        else
+            board[r][c] = 2;
+    }
 }
 
 int main() {
+   bool kazanma=false;
+   bool kaybetme=true;
    srand(time(0));
     cout << "2048 Oyunu - Baslangic" << endl;
 
@@ -191,15 +210,36 @@ do {
 system("cls");
 printBoard();   
 int tus = _getch();
-if (tus == 224) ;
+if (tus == 224) {
     tus = _getch();
     if (tus == 72) yukarikaydir();
     else if (tus == 80) asagikaydir();
     else if (tus == 75) solakaydir();
     else if (tus == 77) sagakaydir();
 }
-addRandom();
-}while (true);
+ for (int i = 0; i < 4; i++){
+        for (int j = 0; j < 4; j++){
+            if (board[i][j] == 2048) kazanma = true;}
+        }
+
+         kaybetme=true;
+         for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (board[i][j] == 0) kaybetme=false;     
+            if (j < 3 && board[i][j] == board[i][j+1]) kaybetme=false; 
+            if (i < 3 && board[i][j] == board[i+1][j]) kaybetme=false; 
+        }
+    }
+
+    addRandom();
+}
+while (kazanma || !kaybetme);
+
+system("cls");
+printBoard();
+if (kazanma) cout << "Tebrikler! Kazandiniz! Skor: " << skor << endl;
+if (kaybetme) cout << "Oyun Bitti! Skor: " << skor << endl;
+
 
   return 0;
 }
