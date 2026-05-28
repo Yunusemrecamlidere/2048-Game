@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <conio.h>// bu fonksiyon tuşlara bastıktan sonra entera basmaya gerek kalmadan hamleyi yapmamıza yarayacak.
-
+#include <SFML/Graphics.hpp>
 using namespace std;
 int board[4][4];
 int yedeksa[4];
@@ -191,55 +191,62 @@ void addRandom() {
 }
 
 int main() {
-   bool kazanma=false;
-   bool kaybetme=true;
-   srand(time(0));
-    cout << "2048 Oyunu - Baslangic" << endl;
 
+    sf::Font font;
+font.openFromFile("C:\\Windows\\Fonts\\arial.ttf");
 
-
-
-for (int i = 0; i < 4; i++){
-        for (int j = 0; j < 4; j++){
-            board[i][j] = 0;}
-}
-
-addRandom();
-addRandom();
-do {
-system("cls");
-printBoard();   
-int tus = _getch();
-if (tus == 224) {
-    tus = _getch();
-    if (tus == 72) yukarikaydir();
-    else if (tus == 80) asagikaydir();
-    else if (tus == 75) solakaydir();
-    else if (tus == 77) sagakaydir();
-}
- for (int i = 0; i < 4; i++){
-        for (int j = 0; j < 4; j++){
-            if (board[i][j] == 2048) kazanma = true;}
-        }
-
-         kaybetme=true;
-         for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            if (board[i][j] == 0) kaybetme=false;     
-            if (j < 3 && board[i][j] == board[i][j+1]) kaybetme=false; 
-            if (i < 3 && board[i][j] == board[i+1][j]) kaybetme=false; 
-        }
-    }
-
+  sf::RenderWindow window(sf::VideoMode({520u, 620u}), "2048");
+    
+    srand(time(0));
+    
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
+            board[i][j] = 0;
+    
     addRandom();
+    addRandom();
+    
+    bool kazanma = false;
+    bool kaybetme = false;
+    
+    while (window.isOpen()) {
+        
+        while (const std::optional event = window.pollEvent()) {
+            if (event->is<sf::Event::Closed>())
+                window.close();
+        }
+        
+        
+       window.clear(sf::Color(250, 248, 239));
+
+// Tahta arka planı
+sf::RectangleShape tahta(sf::Vector2f(480, 480));
+tahta.setPosition({20, 120});
+tahta.setFillColor(sf::Color(187, 173, 160));
+
+window.draw(tahta);
+
+// Hücreleri çiz
+for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 4; j++) {
+      sf::RectangleShape hucre(sf::Vector2f(106, 106));
+hucre.setPosition({28.f + j * 118.f, 128.f + i * 118.f});
+        hucre.setFillColor(sf::Color(205, 193, 180));
+        window.draw(hucre);
+        if (board[i][j] != 0) {
+    sf::Text text(font, std::to_string(board[i][j]), 32);
+    text.setFillColor(sf::Color(119, 110, 101));
+    sf::FloatRect bounds = text.getLocalBounds();
+    text.setOrigin({bounds.position.x + bounds.size.x / 2.f, 
+                    bounds.position.y + bounds.size.y / 2.f});
+    text.setPosition({28.f + j * 118.f + 53.f, 128.f + i * 118.f + 53.f});
+    window.draw(text);
 }
-while (kazanma || !kaybetme);
+    }
+}
 
-system("cls");
-printBoard();
-if (kazanma) cout << "Tebrikler! Kazandiniz! Skor: " << skor << endl;
-if (kaybetme) cout << "Oyun Bitti! Skor: " << skor << endl;
-
-
-  return 0;
+window.display();
+    }
+    
+    return 0;
 }
