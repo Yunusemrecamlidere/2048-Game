@@ -211,13 +211,25 @@ font.openFromFile("C:\\Windows\\Fonts\\arial.ttf");
     
     while (window.isOpen()) {
         
-        while (const std::optional event = window.pollEvent()) {
-            if (event->is<sf::Event::Closed>())
-                window.close();
-        }
-        
-        
+      while (const std::optional event = window.pollEvent()) {
+    if (event->is<sf::Event::Closed>())
+        window.close();
+    
+    if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
+        if (keyPressed->code == sf::Keyboard::Key::Up) yukarikaydir();
+        else if (keyPressed->code == sf::Keyboard::Key::Down) asagikaydir();
+        else if (keyPressed->code == sf::Keyboard::Key::Left) solakaydir();
+        else if (keyPressed->code == sf::Keyboard::Key::Right) sagakaydir();
+        addRandom();
+    }
+}
        window.clear(sf::Color(250, 248, 239));
+
+       
+        sf::Text skorText(font, "Skor: " + std::to_string(skor), 28);
+skorText.setFillColor(sf::Color(119, 110, 101));
+skorText.setPosition({20, 20});
+window.draw(skorText);
 
 // Tahta arka planı
 sf::RectangleShape tahta(sf::Vector2f(480, 480));
