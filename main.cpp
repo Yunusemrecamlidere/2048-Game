@@ -221,6 +221,21 @@ font.openFromFile("C:\\Windows\\Fonts\\arial.ttf");
         else if (keyPressed->code == sf::Keyboard::Key::Left) solakaydir();
         else if (keyPressed->code == sf::Keyboard::Key::Right) sagakaydir();
         addRandom();
+        
+        // kazanma kontrolü
+for (int i = 0; i < 4; i++)
+    for (int j = 0; j < 4; j++)
+        if (board[i][j] == 2048) kazanma = true;
+
+// kaybetme kontrolü
+kaybetme = true;
+for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 4; j++) {
+        if (board[i][j] == 0) kaybetme = false;
+        if (j < 3 && board[i][j] == board[i][j+1]) kaybetme = false;
+        if (i < 3 && board[i][j] == board[i+1][j]) kaybetme = false;
+    }
+}
     }
 }
        window.clear(sf::Color(250, 248, 239));
@@ -243,7 +258,25 @@ for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
       sf::RectangleShape hucre(sf::Vector2f(106, 106));
 hucre.setPosition({28.f + j * 118.f, 128.f + i * 118.f});
-        hucre.setFillColor(sf::Color(205, 193, 180));
+
+       sf::Color hucreRengi;
+switch(board[i][j]) {
+    case 0:    hucreRengi = sf::Color(205, 193, 180); break;
+    case 2:    hucreRengi = sf::Color(238, 228, 218); break;
+    case 4:    hucreRengi = sf::Color(237, 224, 200); break;
+    case 8:    hucreRengi = sf::Color(242, 177, 121); break;
+    case 16:   hucreRengi = sf::Color(245, 149, 99);  break;
+    case 32:   hucreRengi = sf::Color(246, 124, 95);  break;
+    case 64:   hucreRengi = sf::Color(246, 94, 59);   break;
+    case 128:  hucreRengi = sf::Color(237, 207, 114); break;
+    case 256:  hucreRengi = sf::Color(237, 204, 97);  break;
+    case 512:  hucreRengi = sf::Color(237, 200, 80);  break;
+    case 1024: hucreRengi = sf::Color(237, 197, 63);  break;
+    case 2048: hucreRengi = sf::Color(237, 194, 46);  break;
+    default:   hucreRengi = sf::Color(60, 58, 50);    break;
+}
+
+hucre.setFillColor(hucreRengi);
         window.draw(hucre);
         if (board[i][j] != 0) {
     sf::Text text(font, std::to_string(board[i][j]), 32);
@@ -256,7 +289,19 @@ hucre.setPosition({28.f + j * 118.f, 128.f + i * 118.f});
 }
     }
 }
+if (kazanma) {
+    sf::Text kazanText(font, "Tebrikler! 2048!", 40);
+    kazanText.setFillColor(sf::Color(119, 110, 101));
+    kazanText.setPosition({80, 50});
+    window.draw(kazanText);
+}
 
+if (kaybetme) {
+    sf::Text kaybeText(font, "Oyun Bitti!", 40);
+    kaybeText.setFillColor(sf::Color(255, 0, 0));
+    kaybeText.setPosition({130, 50});
+    window.draw(kaybeText);
+}
 window.display();
     }
     
