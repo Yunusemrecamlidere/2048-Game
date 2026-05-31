@@ -220,6 +220,16 @@ font.openFromFile("C:\\Windows\\Fonts\\arial.ttf");
         else if (keyPressed->code == sf::Keyboard::Key::Down) asagikaydir();
         else if (keyPressed->code == sf::Keyboard::Key::Left) solakaydir();
         else if (keyPressed->code == sf::Keyboard::Key::Right) sagakaydir();
+        if (keyPressed->code == sf::Keyboard::Key::R) {
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
+            board[i][j] = 0;
+    skor = 0;
+    kazanma = false;
+    kaybetme = false;
+    addRandom();
+    addRandom();
+}
         addRandom();
         
         // kazanma kontrolü
@@ -299,8 +309,14 @@ if (kazanma) {
 if (kaybetme) {
     sf::Text kaybeText(font, "Oyun Bitti!", 40);
     kaybeText.setFillColor(sf::Color(255, 0, 0));
-    kaybeText.setPosition({130, 50});
+    kaybeText.setPosition({150, 40});
     window.draw(kaybeText);
+}
+if (kazanma || kaybetme) {
+    sf::Text restartText(font, "[R] - Yeni Oyun", 22);
+    restartText.setFillColor(sf::Color(119, 110, 101));
+    restartText.setPosition({170, 90});
+    window.draw(restartText);
 }
 window.display();
     }
