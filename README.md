@@ -4,6 +4,7 @@
 C++ ve SFML kütüphanesi kullanılarak geliştirilmiş 2048 bulmaca oyunu.
 
 ## Derleme
+g++ main.cpp -o oyun -I"C:\msys64\mingw64\include" -L"C:\msys64\mingw64\lib" -lsfml-graphics -lsfml-window -lsfml-system -mwindows
 
 ## Oynanış
 - Ok tuşları ile yön kontrolü
@@ -13,3 +14,6 @@ C++ ve SFML kütüphanesi kullanılarak geliştirilmiş 2048 bulmaca oyunu.
 ## Öğrenci
 - Ad Soyad: Yunus Emre Çamlıdere
 - Numara: 240229046
+
+## GitHub
+https://github.com/Yunusemrecamlidere/2048-Game
